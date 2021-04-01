@@ -2,7 +2,7 @@ from Board import Figure
 
 class Rook(Figure):
     def __repr__(self):
-        return "B" if self.white else "b"
+        return "R" if self.white else "r"
     def __init__(self, white):
         Figure.__init__(self)
 

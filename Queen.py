@@ -2,7 +2,7 @@ from Board import Figure
 
 class Queen(Figure):
     def __repr__(self):
-        return "B" if self.white else "b"
+        return "Q" if self.white else "q"
     def __init__(self, white):
         Figure.__init__(self)
 
