@@ -16,7 +16,7 @@ class Rook(Figure):
             pos_x, pos_y = x, y
             pos_x += dx
             pos_y += dy
-            while 0<pos_x<8 and 0>pos_y>8 and (board[pos_x,pos_y].empty):
+            while 0<=pos_x<8 and 0<=pos_y<8 and (board[pos_x,pos_y].empty):
                 moves.append((pos_x, pos_y))
                 pos_x += dx
                 pos_y += dy
