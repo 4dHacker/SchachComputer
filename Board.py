@@ -108,6 +108,20 @@ class King(Figure):
 
 
 class Board:
+    def setup(self, new_board):
+        self.board = new_board
+
+    def make_move(self, x, y, x2, y2):
+        figure = self.board[y][x]
+
+        if type(figure) == Pawn and ((y == 1 and figure.white) or (y == 6 and not figure.white)):
+            self.board[y2][x2] = Queen(self.board[y][x].white)
+            self.board[y][x] = Figure()
+            return
+
+        self.board[y2][x2] = self.board[y][x]
+        self.board[y][x] = Figure()
+
     def get_possible_moves(self):
         moves = []
 
@@ -138,5 +152,15 @@ class Board:
             [Rook(True), Knight(True), Bishop(True), Queen(True), King(True), Bishop(True), Knight(True), Rook(True)]]
 
 
-board = Board()
-print(board)
+if __name__ == "__main__":
+    board = Board()
+    board.setup([[Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
+                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
+                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
+                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
+                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
+                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
+                 [Figure(), Figure(), Pawn(False), Figure(), Figure(), Figure(), Figure(), Figure()],
+                 [Figure(), Figure(), Figure(), Rook(True), Figure(), Figure(), Figure(), Figure()]])
+    board.make_move(2, 6, 3, 7)
+    print(board)
