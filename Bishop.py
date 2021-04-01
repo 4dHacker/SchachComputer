@@ -22,3 +22,4 @@ class Bishop(Figure):
                 pos_y += dy
             if(board[pos_x,pos_y].white != self.white):
                 moves.append((pos_x, pos_y))
+        return moves

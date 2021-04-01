@@ -19,3 +19,5 @@ class Pawn(Figure):
 
         if board[y+1,x+1].white != self.write:
             moves.append(x,y+2)
+
+        return moves
