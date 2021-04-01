@@ -20,6 +20,6 @@ class Rook(Figure):
                 moves.append((pos_x, pos_y))
                 pos_x += dx
                 pos_y += dy
-            if(board[pos_x,pos_y].white != self.white):
+            if(board[pos_y][pos_x].white != self.white):
                 moves.append((pos_x, pos_y))
         return moves

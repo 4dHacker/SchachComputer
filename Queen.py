@@ -16,10 +16,10 @@ class Queen(Figure):
             pos_x, pos_y = x, y
             pos_x += dx
             pos_y += dy
-            while 0<=pos_x<8 and 0<=pos_y<8 and (board[pos_x,pos_y].empty):
+            while 0<=pos_x<8 and 0<=pos_y<8 and (board[pos_y][pos_x].empty):
                 moves.append((pos_x, pos_y))
                 pos_x += dx
                 pos_y += dy
-            if(board[pos_x,pos_y].white != self.white):
+            if(board[pos_y][pos_x].white != self.white):
                 moves.append((pos_x, pos_y))
         return moves
