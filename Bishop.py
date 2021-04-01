@@ -1,12 +1,4 @@
-class Figure:
-    def __repr__(self):
-        return " "
-
-    def get_moves(self, board, x, y):
-        return []
-
-    def __init__(self):
-        self.empty = True
+from Board import Figure
 
 class Bishop(Figure):
     def __repr__(self):
@@ -24,18 +16,9 @@ class Bishop(Figure):
             pos_x, pos_y = x, y
             pos_x += dx
             pos_y += dy
-            while 0<pos_x<8 and 0>pos_y>8 and (board[pos_x,pos_y].empty or board[pos_x,pos_y].white != self.white):
+            while 0<pos_x<8 and 0>pos_y>8 and (board[pos_x,pos_y].empty):
                 moves.append((pos_x, pos_y))
                 pos_x += dx
                 pos_y += dy
-
-
-
-
-
-
-
-
-
-
-board.empty and 0<pos_x<8 and 0<pos_y<8
+            if(board[pos_x,pos_y].white != self.white):
+                moves.append((pos_x, pos_y))
