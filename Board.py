@@ -95,7 +95,7 @@ class King(Figure):
                 if not (0 <= x + dx < 8 and 0 <= y + dy < 8):
                     continue
 
-                if board[y + dy][x + dy].empty or board[y + dy][x + dx].white != self.white:
+                if board[y + dy][x + dx].empty or board[y + dy][x + dx].white != self.white:
                     moves.append((dx, dy))
 
         return moves
