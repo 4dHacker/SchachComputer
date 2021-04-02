@@ -1,6 +1,6 @@
 class Figure:
     def __repr__(self):
-        return "X"
+        return " "
 
     def get_moves(self, board, x, y):
         return []

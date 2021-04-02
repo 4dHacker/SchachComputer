@@ -4,6 +4,13 @@ SHOW_MATERIAL = True
 
 
 class Board:
+    def copy(self):
+        new_board = [row.copy() for row in self.board]
+        board = Board()
+        board.setup(new_board, self.whites_turn)
+
+        return board
+
     def material(self):
         white = 0
         black = 0
@@ -21,8 +28,9 @@ class Board:
 
         return white, black
 
-    def setup(self, new_board):
+    def setup(self, new_board, whites_turn):
         self.board = new_board
+        self.whites_turn = whites_turn
 
     def make_move(self, x, y, x2, y2):
         figure = self.board[y][x]
@@ -47,6 +55,8 @@ class Board:
 
         self.board[y2][x2] = self.board[y][x]
         self.board[y][x] = Figure()
+
+        self.whites_turn = not self.whites_turn
 
     def get_possible_moves(self, white):
         moves = []
@@ -83,9 +93,11 @@ class Board:
             [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
             [Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True)],
             [Rook(True), Knight(True), Bishop(True), Queen(True), King(True), Bishop(True), Knight(True), Rook(True)]]
+        self.whites_turn = True
 
 
 if __name__ == "__main__":
     board = Board()
-    print(board)
-    print()
+
+    while True:
+        eval(input(">>> "))
