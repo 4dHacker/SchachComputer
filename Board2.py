@@ -112,7 +112,7 @@ class Board:
         return False
 
     def check(self, x, y):
-        newPos = [item[1:3] for item in self.possible_moves]
+        newPos = [item[2:3] for item in self.possible_moves]
         if (x, y) in newPos:
             return True
         else:
@@ -151,6 +151,8 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
+
+
 
     while True:
         eval(input(">>> "))
