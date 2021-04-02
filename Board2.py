@@ -83,7 +83,12 @@ class Board:
                     moves.append((x, y, new_x, new_y))
 
         return moves
-
+    def check(self,moves,x,y):
+        newPos=[item[1:3] for item in moves]
+        if (x,y) in newPos:
+            return True
+        else:
+            return False
     def __repr__(self):
         representation = []
 
