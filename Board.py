@@ -1,3 +1,6 @@
+SHOW_MATERIAl = True
+
+
 class Figure:
     def __repr__(self):
         return " "
@@ -177,6 +180,10 @@ class Board:
         for row in self.board:
             representation.append(" ".join(map(repr, row)))
 
+        if SHOW_MATERIAl:
+            white, black = self.material()
+            representation[4] += "   " + (" " if white - black < 0 else "+") + str(white - black)
+
         return "\n".join(representation)
 
     def __init__(self):
@@ -193,12 +200,4 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
-    print(board.material())
-    board.setup([[Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
-                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
-                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
-                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
-                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
-                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
-                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
-                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()]])
+    print(board)
