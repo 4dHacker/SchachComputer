@@ -16,6 +16,28 @@ class King(Figure):
 
     def get_moves(self, board, x, y):
         moves = []
+
+
+        if self.white:
+            if not board.white_king_moved and not board.check[4][7]:
+                if not board.right_down_moved:
+                    if board[7][5].empty and board[7][6].empty and not board.check[5][7] and not board.check[6][7]:
+                        moves.append((7, 6))
+                elif not board.left_down_moved:
+                    if board[7][1].empty and board[7][2].empty and board[7][3].empty and not board.check[1][7] and not board.check[2][7] and not board.check[3][7]:
+                        moves.append((7, 2))
+        else:
+            if not board.black_king_moved and not board.check[4][0]:
+                if not board.right_up_moved:
+                    if board[0][5].empty and board[0][6].empty and not board.check[5][0] and not board.check[6][0]:
+                        moves.append((6, 0))
+                elif not board.left_up_moved:
+                    if board[0][1].empty and board[0][2].empty and board[0][3].empty and not board.check[1][0] and not board.check[2][0] and not board.check[3][0]:
+                        moves.append((2, 0))
+
+
+
+
         for dx in range(-1, 2):
             for dy in range(-1, 2):
                 if dx == 0 == dy:
@@ -26,7 +48,6 @@ class King(Figure):
 
                 if board[y + dy][x + dx].empty or board[y + dy][x + dx].white != self.white:
                     moves.append((x + dx, y + dy))
-
         return moves
 
     def __init__(self, white):
