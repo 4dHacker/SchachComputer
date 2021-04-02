@@ -126,18 +126,17 @@ class Pawn(Figure):
         if self.white:
             home = 6
             direction = -1
-            if y==3 and x<7 and type(board[x+1][2])==Pawn and board[x+1][2]!=self.white:
-                moves.append(x+1, 2)
-            elif y==3 and x>0 and type(board[x-1][2])==Pawn and board[x-1][2]!=self.white:
-                moves.append(x-1,2)
+            if y == 3 and x < 7 and type(board[x + 1][2]) == Pawn and board[x + 1][2].white != self.white:
+                moves.append((x + 1, 2))
+            elif y == 3 and x > 0 and type(board[x - 1][2]) == Pawn and board[x - 1][2].white != self.white:
+                moves.append((x - 1, 2))
         else:
             home = 1
             direction = 1
-            if y==4 and x<7 and type(board[x+1][5])==Pawn and board[x+1][5]!=self.white:
-                moves.append(x+1, 5)
-            elif y==3 and x>0 and type(board[x-1][5])==Pawn and board[x-1][5]!=self.white:
-                moves.append(x-1,5)
-
+            if y == 4 and x < 7 and type(board[x + 1][5]) == Pawn and board[x + 1][5].white != self.white:
+                moves.append((x + 1, 5))
+            elif y == 4 and x > 0 and type(board[x - 1][5]) == Pawn and board[x - 1][5].white != self.white:
+                moves.append((x - 1, 5))
 
         if board[y + direction][x].empty:
             moves.append((x, y + direction))
