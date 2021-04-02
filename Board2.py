@@ -54,6 +54,18 @@ class Board:
 
     def make_move(self, x, y, x2, y2):
         figure = self.board[y][x]
+        if x==0 and y==0:
+            self.left_up_moved = True
+        elif x==0 and y==7:
+            self.left_down_moved = True
+        elif x==7 and y==0:
+            self.right_up_moved = True
+        elif x==7 and y==7:
+            self.right_down_moved = True
+        elif x==4 and y==7:
+            self.white_king_moved = True
+        elif x==4 and y==0:
+            self.black_king_moved = True
 
         if type(figure) == King and y == y2 and abs(x2 - x) == 2:
             if x2 < x:
@@ -141,7 +153,12 @@ class Board:
             [Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True)],
             [Rook(True), Knight(True), Bishop(True), Queen(True), King(True), Bishop(True), Knight(True), Rook(True)]]
         self.whites_turn = True
-
+        self.left_down_moved = False
+        self.right_down_moved = False
+        self.left_up_moved = False
+        self.right_up_moved = False
+        self.black_king_moved = False
+        self.white_king_moved = False
         if generation:
             self.possible_moves = self.get_possible_moves(True)
 
