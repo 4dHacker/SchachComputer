@@ -1,4 +1,5 @@
 from Pieces2 import *
+import time
 
 SHOW_MATERIAL = True
 
@@ -6,7 +7,7 @@ SHOW_MATERIAL = True
 class Board:
     def copy(self):
         new_board = [row.copy() for row in self.board]
-        board = Board()
+        board = Board(False)
         board.setup(new_board, self.whites_turn)
 
         return board
@@ -17,7 +18,7 @@ class Board:
 
         n = 0
 
-        for move in self.get_possible_moves(self.whites_turn):
+        for move in self.possible_moves:
             new_board = self.copy()
             new_board.make_move(*move)
             n += new_board.perft(depth - 1)
@@ -44,6 +45,7 @@ class Board:
     def setup(self, new_board, whites_turn):
         self.board = new_board
         self.whites_turn = whites_turn
+        self.possible_moves = self.get_possible_moves(self.whites_turn)
 
     def make_move(self, x, y, x2, y2):
         figure = self.board[y][x]
@@ -70,6 +72,7 @@ class Board:
         self.board[y][x] = Figure()
 
         self.whites_turn = not self.whites_turn
+        self.possible_moves = self.get_possible_moves(self.whites_turn)
 
     def get_possible_moves(self, white):
         moves = []
@@ -80,15 +83,41 @@ class Board:
                     continue
 
                 for new_x, new_y in self.board[y][x].get_moves(self.board, x, y):
+                    # copy = self.copy()
+                    # copy.make_move(x, y, new_x, new_y)
+
+                    pass  # TODO
+
                     moves.append((x, y, new_x, new_y))
 
         return moves
-    def check(self,moves,x,y):
-        newPos=[item[1:3] for item in moves]
-        if (x,y) in newPos:
+
+    def check_king(self, white):
+        stop = False
+
+        for x in range(8):
+            for y in range(8):
+                if type(self.board[y][x]) == King and self.board[y][x].white == white:
+                    stop = True
+                    break
+
+            if stop:
+                break
+
+        positions = [move[2:] for move in self.possible_moves]
+
+        if (x, y) in positions:
+            return True
+
+        return False
+
+    def check(self, x, y):
+        newPos = [item[1:3] for item in self.possible_moves]
+        if (x, y) in newPos:
             return True
         else:
             return False
+
     def __repr__(self):
         representation = []
 
@@ -101,7 +130,7 @@ class Board:
 
         return "\n".join(representation)
 
-    def __init__(self):
+    def __init__(self, generation=True):
         self.board = [
             [Rook(False), Knight(False), Bishop(False), Queen(False), King(False), Bishop(False), Knight(False), Rook(False)],
             [Pawn(False), Pawn(False), Pawn(False), Pawn(False), Pawn(False), Pawn(False), Pawn(False), Pawn(False)],
@@ -113,11 +142,15 @@ class Board:
             [Rook(True), Knight(True), Bishop(True), Queen(True), King(True), Bishop(True), Knight(True), Rook(True)]]
         self.whites_turn = True
 
+        if generation:
+            self.possible_moves = self.get_possible_moves(True)
+
+        else:
+            self.possible_moves = []
+
 
 if __name__ == "__main__":
     board = Board()
-
-    print(board.perft(5))
 
     while True:
         eval(input(">>> "))
