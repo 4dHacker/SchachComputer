@@ -1,6 +1,6 @@
 class Figure:
     def __repr__(self):
-        return " "
+        return "X"
 
     def get_moves(self, board, x, y):
         return []
@@ -13,6 +13,21 @@ class Figure:
 class King(Figure):
     def __repr__(self):
         return "K" if self.white else "k"
+
+    def get_moves(self, board, x, y):
+        moves = []
+        for dx in range(-1, 2):
+            for dy in range(-1, 2):
+                if dx == 0 == dy:
+                    continue
+
+                if not (0 <= x + dx < 8 and 0 <= y + dy < 8):
+                    continue
+
+                if board[y + dy][x + dx].empty or board[y + dy][x + dx].white != self.white:
+                    moves.append((x + dx, y + dy))
+
+        return moves
 
     def __init__(self, white):
         Figure.__init__(self)
@@ -33,6 +48,22 @@ class Queen(Figure):
         self.white = white
         self.value = 9
 
+    def get_moves(self, board, x, y):
+        moves = []
+
+        for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, 1), (-1, 0)):
+            pos_x, pos_y = x, y
+            pos_x += dx
+            pos_y += dy
+            while 0 <= pos_x < 8 and 0 <= pos_y < 8 and board[pos_y][pos_x].empty:
+                moves.append((pos_x, pos_y))
+                pos_x += dx
+                pos_y += dy
+            if 0 <= pos_x < 8 and 0 <= pos_y < 8:
+                if board[pos_y][pos_x].white != self.white:
+                    moves.append((pos_x, pos_y))
+        return moves
+
 
 class Knight(Figure):
     def __repr__(self):
@@ -46,7 +77,7 @@ class Knight(Figure):
                 continue
 
             if board[y + dy][x + dx].empty or board[y + dy][x + dx].white != self.white:
-                moves.append((dx, dy))
+                moves.append((x + dx, y + dy))
 
         return moves
 
@@ -69,10 +100,46 @@ class Bishop(Figure):
         self.white = white
         self.value = 3
 
+    def get_moves(self, board, x, y):
+        moves = []
+
+        for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
+            pos_x, pos_y = x, y
+            pos_x += dx
+            pos_y += dy
+            while 0 <= pos_x < 8 and 0 <= pos_y < 8 and board[pos_y][pos_x].empty:
+                moves.append((pos_x, pos_y))
+                pos_x += dx
+                pos_y += dy
+            if 0 <= pos_x < 8 and 0 <= pos_y < 8:
+                if board[pos_y][pos_x].white != self.white:
+                    moves.append((pos_x, pos_y))
+        return moves
+
 
 class Pawn(Figure):
     def __repr__(self):
         return "P" if self.white else "p"
+
+    def get_moves(self, board, x, y):
+        moves = []
+        if self.white:
+            home = 6
+            direction = -1
+        else:
+            home = 1
+            direction = 1
+        if board[y + direction][x].empty:
+            moves.append((x, y + direction))
+        if y == home and board[y + (2 * direction)][x].empty:
+            moves.append((x, y + 2 * direction))
+
+        for i in (1, -1):
+            if 0 <= (x + i) < 8:
+                if not board[y + direction][x + i].empty and board[y + direction][x + i].white != self.white:
+                    moves.append((i + x, y + direction))
+
+        return moves
 
     def __init__(self, white):
         Figure.__init__(self)
@@ -92,3 +159,21 @@ class Rook(Figure):
         self.empty = False
         self.white = white
         self.value = 5
+
+    def get_moves(self, board, x, y):
+        moves = []
+
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            pos_x, pos_y = x, y
+            pos_x += dx
+            pos_y += dy
+            while 0 <= pos_x < 8 and 0 <= pos_y < 8 and board[pos_y][pos_x].empty:
+                moves.append((pos_x, pos_y))
+                pos_x += dx
+                pos_y += dy
+
+            if 0 <= pos_x < 8 and 0 <= pos_y < 8:
+                if board[pos_y][pos_x].white != self.white:
+                    moves.append((pos_x, pos_y))
+
+        return moves

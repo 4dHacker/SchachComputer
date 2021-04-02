@@ -56,8 +56,8 @@ class Board:
                 if self.board[y][x].empty or self.board[y][x].white != white:
                     continue
 
-                for dx, dy in self.board[y][x].get_moves(self.board, x, y):
-                    moves.append((x, y, x + dx, y + dy))
+                for new_x, new_y in self.board[y][x].get_moves(self.board, x, y):
+                    moves.append((x, y, new_x, new_y))
 
         return moves
 
@@ -87,4 +87,5 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
-    print(board.get_possible_moves(True))
+    print(board)
+    print()
