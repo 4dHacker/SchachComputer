@@ -112,7 +112,7 @@ class Board:
         return False
 
     def check(self, x, y):
-        newPos = [item[2:3] for item in self.possible_moves]
+        newPos = [item[2:] for item in self.possible_moves]
         if (x, y) in newPos:
             return True
         else:
