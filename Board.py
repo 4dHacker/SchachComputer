@@ -7,6 +7,7 @@ class Figure:
 
     def __init__(self):
         self.empty = True
+        self.value = 0
 
 
 # TODO
@@ -19,6 +20,7 @@ class Bishop(Figure):
 
         self.empty = False
         self.white = white
+        self.value = 3
 
 
 # TODO
@@ -31,6 +33,7 @@ class Pawn(Figure):
 
         self.empty = False
         self.white = white
+        self.value = 1
 
 
 # TODO
@@ -43,6 +46,7 @@ class Queen(Figure):
 
         self.empty = False
         self.white = white
+        self.value = 9
 
 
 # TODO
@@ -55,6 +59,7 @@ class Rook(Figure):
 
         self.empty = False
         self.white = white
+        self.value = 5
 
 
 class Knight(Figure):
@@ -78,11 +83,12 @@ class Knight(Figure):
 
         self.empty = False
         self.white = white
+        self.value = 3
 
 
 class King(Figure):
     def __repr__(self):
-        return "Q" if self.white else "q"
+        return "K" if self.white else "k"
 
     def get_moves(self, board, x, y):
         moves = []
@@ -108,11 +114,41 @@ class King(Figure):
 
 
 class Board:
+    def material(self):
+        white = 0
+        black = 0
+
+        for y in range(8):
+            for x in range(8):
+                if self.board[y][x].empty:
+                    continue
+
+                if self.board[y][x].white:
+                    white += self.board[y][x].value
+
+                else:
+                    black += self.board[y][x].value
+
+        return white, black
+
     def setup(self, new_board):
         self.board = new_board
 
     def make_move(self, x, y, x2, y2):
         figure = self.board[y][x]
+
+        if type(figure) == King and y == y2 and abs(x2 - x) == 2:
+            if x2 < x:
+                assert type(self.board[y][0]) == Rook
+
+                self.board[y][3] = self.board[y][0]
+                self.board[y][0] = Figure()
+
+            else:
+                assert type(self.board[y][7]) == Rook
+
+                self.board[y][5] = self.board[y][7]
+                self.board[y][7] = Figure()
 
         if type(figure) == Pawn and ((y == 1 and figure.white) or (y == 6 and not figure.white)):
             self.board[y2][x2] = Queen(self.board[y][x].white)
@@ -122,12 +158,16 @@ class Board:
         self.board[y2][x2] = self.board[y][x]
         self.board[y][x] = Figure()
 
-    def get_possible_moves(self):
+    def get_possible_moves(self, white):
         moves = []
 
         for y in range(8):
             for x in range(8):
-                moves += self.board[y][x].get_moves(board, x, y)
+                if self.board[y][x].empty or self.board[y][x].white != white:
+                    continue
+
+                for dx, dy in self.board[y][x].get_moves(self.board, x, y):
+                    moves.append((x, y, x + dx, y + dy))
 
         return moves
 
@@ -141,8 +181,7 @@ class Board:
 
     def __init__(self):
         self.board = [
-            [Rook(False), Knight(False), Bishop(False), Queen(False), King(False), Bishop(False), Knight(False),
-             Rook(False)],
+            [Rook(False), Knight(False), Bishop(False), Queen(False), King(False), Bishop(False), Knight(False), Rook(False)],
             [Pawn(False), Pawn(False), Pawn(False), Pawn(False), Pawn(False), Pawn(False), Pawn(False), Pawn(False)],
             [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
             [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
@@ -154,13 +193,12 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
+    print(board.material())
     board.setup([[Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
                  [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
                  [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
                  [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
                  [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
                  [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
-                 [Figure(), Figure(), Pawn(False), Figure(), Figure(), Figure(), Figure(), Figure()],
-                 [Figure(), Figure(), Figure(), Rook(True), Figure(), Figure(), Figure(), Figure()]])
-    board.make_move(2, 6, 3, 7)
-    print(board)
+                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()],
+                 [Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure(), Figure()]])
