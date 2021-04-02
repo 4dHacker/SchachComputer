@@ -1,5 +1,4 @@
 from Pieces2 import *
-import time
 
 SHOW_MATERIAL = True
 
