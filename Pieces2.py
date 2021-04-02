@@ -51,7 +51,7 @@ class Queen(Figure):
     def get_moves(self, board, x, y):
         moves = []
 
-        for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, 1), (-1, 0)):
+        for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, 1), (0, -1)):
             pos_x, pos_y = x, y
             pos_x += dx
             pos_y += dy
@@ -131,8 +131,9 @@ class Pawn(Figure):
             direction = 1
         if board[y + direction][x].empty:
             moves.append((x, y + direction))
-        if y == home and board[y + (2 * direction)][x].empty:
-            moves.append((x, y + 2 * direction))
+
+            if y == home and board[y + (2 * direction)][x].empty:
+                moves.append((x, y + 2 * direction))
 
         for i in (1, -1):
             if 0 <= (x + i) < 8:

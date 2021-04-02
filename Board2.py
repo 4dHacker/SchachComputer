@@ -11,6 +11,19 @@ class Board:
 
         return board
 
+    def perft(self, depth):
+        if depth == 0:
+            return 1
+
+        n = 0
+
+        for move in self.get_possible_moves(self.whites_turn):
+            new_board = self.copy()
+            new_board.make_move(*move)
+            n += new_board.perft(depth - 1)
+
+        return n
+
     def material(self):
         white = 0
         black = 0
@@ -98,6 +111,8 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
+
+    print(board.perft(5))
 
     while True:
         eval(input(">>> "))
