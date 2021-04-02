@@ -5,22 +5,24 @@ SHOW_MATERIAL = True
 
 
 class Board:
-    def copy(self):
+    def copy(self, theoretical=False):
         new_board = [row.copy() for row in self.board]
         board = Board(False)
+        board.theoretical = theoretical
         board.setup(new_board, self.whites_turn)
 
         return board
 
     def perft(self, depth):
-        if depth == 0:
-            return 1
+        if depth == 1:
+            return len(self.possible_moves)
 
         n = 0
 
         for move in self.possible_moves:
             new_board = self.copy()
             new_board.make_move(*move)
+
             n += new_board.perft(depth - 1)
 
         return n
@@ -83,10 +85,13 @@ class Board:
                     continue
 
                 for new_x, new_y in self.board[y][x].get_moves(self.board, x, y):
-                    # copy = self.copy()
-                    # copy.make_move(x, y, new_x, new_y)
+                    if not self.theoretical:
+                        pass
+                        copy = self.copy(True)
+                        copy.make_move(x, y, new_x, new_y)
 
-                    pass  # TODO
+                        if copy.check_king(white):
+                            continue
 
                     moves.append((x, y, new_x, new_y))
 
@@ -141,6 +146,7 @@ class Board:
             [Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True), Pawn(True)],
             [Rook(True), Knight(True), Bishop(True), Queen(True), King(True), Bishop(True), Knight(True), Rook(True)]]
         self.whites_turn = True
+        self.theoretical = False
 
         if generation:
             self.possible_moves = self.get_possible_moves(True)
@@ -151,8 +157,7 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
-
-
+    print(board.perft(4))
 
     while True:
         eval(input(">>> "))
